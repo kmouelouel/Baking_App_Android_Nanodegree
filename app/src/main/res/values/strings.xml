@@ -16,4 +16,9 @@
     <string name="image" translatable="false">image</string>
     <string name="short_description" translatable="false">shortDescription</string>
 
+    <string name="nutella_pie">Nutella Pie</string>
+    <string name="brownies">Brownies</string>
+    <string name="yellow_cake">Yellow Cake</string>
+    <string name="cheesecake">Cheesecake</string>
+
 </resources>

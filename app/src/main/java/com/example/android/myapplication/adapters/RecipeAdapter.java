@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.android.myapplication.R;
 import com.example.android.myapplication.models.Recipe;
+import com.example.android.myapplication.utils.ImageUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -58,7 +59,9 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         if(!recipeImage.isEmpty()) {
             Picasso.with(context).load(recipeImage).into(holder.mImageViewRecipeItem);
         } else {
-            holder.mImageViewRecipeItem.setVisibility(View.INVISIBLE);
+            int drawableId = ImageUtils.getImageResourceId(context, recipe.getRecipeName());
+           Picasso.with(context).load(drawableId).into(holder.mImageViewRecipeItem);
+           // holder.mImageViewRecipeItem.setVisibility(View.INVISIBLE);
         }
     }
 
