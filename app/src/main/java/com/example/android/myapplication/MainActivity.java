@@ -1,5 +1,6 @@
 package com.example.android.myapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements  RecipeAdapter.Re
 
     private final String TAG= MainActivity.class.getName();
     //create an ID to identify the loader responsible for loading our recipe data
-    private static final int ID_RECIPE_LOADER = 22;
+
     @BindView(R.id.recycler_view_recipes)
     RecyclerView mRecyclerViewRecipes;
     @BindView(R.id.loading_indicator)
@@ -59,6 +60,9 @@ public class MainActivity extends AppCompatActivity implements  RecipeAdapter.Re
     public void onClick(Recipe recipe) {
         Toast.makeText(getApplicationContext(), recipe.getRecipeName(), Toast.LENGTH_SHORT)
                 .show();
+        Intent intent = new Intent(this, RecipeDetailsActivity.class);
+        intent.putExtra(getString(R.string.recipe), recipe);
+        startActivity(intent);
 
 
     }

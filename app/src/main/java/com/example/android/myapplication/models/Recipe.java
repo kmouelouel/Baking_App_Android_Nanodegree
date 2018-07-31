@@ -82,9 +82,7 @@ public class Recipe implements Parcelable {
         return imageURL;
     }
 
-    public static Creator<Recipe> getCREATOR() {
-        return CREATOR;
-    }
+
 
     @Override
     public int describeContents() {
@@ -93,6 +91,10 @@ public class Recipe implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(recipeName);
+        dest.writeTypedList(ingredients);
+        dest.writeTypedList(steps);
+        dest.writeInt(serving);
+        dest.writeString(imageURL);
     }
 }

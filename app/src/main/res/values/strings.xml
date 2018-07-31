@@ -21,4 +21,8 @@
     <string name="yellow_cake">Yellow Cake</string>
     <string name="cheesecake">Cheesecake</string>
 
+    <string name="recipe">Recipe_key</string>
+    <string name="ingredients_header">ingredients:</string>
+    <string name="steps_header">Steps:</string>
+
 </resources>
