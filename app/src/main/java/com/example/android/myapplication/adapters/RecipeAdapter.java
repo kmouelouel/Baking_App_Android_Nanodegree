@@ -120,6 +120,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
         }
     }
 
+    public List<Recipe> getRecipeList() {
+        return recipeList;
+    }
+
     public interface RecipeOnClickHandler {
         void onClick(Recipe recipe);
     }

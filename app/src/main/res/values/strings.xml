@@ -14,7 +14,6 @@
     <string name="video_url" translatable="false">videoURL</string>
     <string name="thumbnail_url" translatable="false">thumbnailURL</string>
     <string name="image" translatable="false">image</string>
-    <string name="short_description" translatable="false">shortDescription</string>
 
     <string name="nutella_pie">Nutella Pie</string>
     <string name="brownies">Brownies</string>
@@ -23,6 +22,25 @@
 
     <string name="recipe">Recipe_key</string>
     <string name="ingredients_header">ingredients:</string>
+
+
+    <string name="scroll_position" translatable="false">scroll_position</string>
+    <string name="selected_row_index" translatable="false">selected_row_index</string>
+
+    <string name="must_implement" translatable="false">must implement</string>
+
+    <string name="step_position" translatable="false">step_position</string>
+
     <string name="steps_header">Steps:</string>
+    <string name="short_description" translatable="false">shortDescription</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="media_url_not_found">Media URL could not be found.</string>
+    <string name="step_could_not_be_loaded">Step could not be loaded.</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+    <string name="recipe_cannot_be_displayed">Recipe cannot be displayed.</string>
 
 </resources>

@@ -9,8 +9,11 @@ public class Step implements Parcelable {
     private String videoURL;
     private  String thumbnailURL;
 
-    public Step(String shortDescription, String description,String videoURL,String thumbnailURL){
-
+    public Step(String shortDescription, String description, String videoUrl, String thumbnailUrl) {
+        this.shortDescription = shortDescription;
+        this.description = description;
+        this.videoURL = videoUrl;
+        this.thumbnailURL = thumbnailUrl;
     }
 
     protected Step(Parcel in){
@@ -24,11 +27,11 @@ public class Step implements Parcelable {
         public Step createFromParcel(Parcel in) {
             return new Step(in);
         }
+
         @Override
         public Step[] newArray(int size) {
             return new Step[size];
         }
-
     };
 
 
@@ -72,6 +75,10 @@ public class Step implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(shortDescription);
+        dest.writeString(description);
+        dest.writeString(videoURL);
+        dest.writeString(thumbnailURL);
 
     }
 }

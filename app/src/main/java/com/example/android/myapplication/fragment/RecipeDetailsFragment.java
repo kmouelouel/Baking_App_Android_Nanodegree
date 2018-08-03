@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ScrollView;
 
 import com.example.android.myapplication.R;
+import com.example.android.myapplication.adapters.IngredientAdapter;
+import com.example.android.myapplication.adapters.StepAdapter;
 import com.example.android.myapplication.models.Ingredient;
 import com.example.android.myapplication.models.Recipe;
 import com.example.android.myapplication.models.Step;
@@ -21,7 +24,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RecipeDetailsFragment extends  Fragment {
+public class RecipeDetailsFragment extends  Fragment implements StepAdapter.StepOnClickHandler {
     @BindView(R.id.recycler_view_ingredients)
     RecyclerView mRecyclerViewIngredients;
 
@@ -32,6 +35,9 @@ public class RecipeDetailsFragment extends  Fragment {
     ScrollView mNestedScrollViewRecipeDetails;
     // Tag for logging
     private static final String TAG = "RecipeDetailsFragment";
+
+    private RecipeDetailsOnClickListener listener;
+    private StepAdapter stepAdapter;
 
     public RecipeDetailsFragment() {
 
@@ -59,13 +65,13 @@ public class RecipeDetailsFragment extends  Fragment {
                 steps = recipe.getSteps();
             }
         }
-       // IngredientAdapter ingredientAdapter = new IngredientAdapter(getContext(), ingredients);
-       // recyclerViewIngredients.setLayoutManager(new LinearLayoutManager(getContext()));
-      //  recyclerViewIngredients.setAdapter(ingredientAdapter);
+        IngredientAdapter ingredientAdapter = new IngredientAdapter(getContext(), ingredients);
+        mRecyclerViewIngredients.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerViewIngredients.setAdapter(ingredientAdapter);
 
-      //  stepAdapter = new StepAdapter(getContext(), steps, this);
-       // recyclerViewSteps.setLayoutManager(new LinearLayoutManager(getContext()));
-       // recyclerViewSteps.setAdapter(stepAdapter);
+      stepAdapter = new StepAdapter(getContext(), steps, this);
+      mRecyclerViewSteps.setLayoutManager(new LinearLayoutManager(getContext()));
+      mRecyclerViewSteps.setAdapter(stepAdapter);
         return view;
 
     }
@@ -73,27 +79,40 @@ public class RecipeDetailsFragment extends  Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-       /* if (context instanceof RecipeDetailsOnClickListener) {
+        if (context instanceof RecipeDetailsOnClickListener) {
             listener = (RecipeDetailsOnClickListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + getString(R.string.must_implement)
                     + RecipeDetailsOnClickListener.class.getSimpleName());
-        }*/
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-       // listener = null;
+        listener = null;
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-      /*  outState.putIntArray(getString(R.string.scroll_position),
-                new int[]{nestedScrollViewRecipeDetails.getScrollX(), nestedScrollViewRecipeDetails.getScrollY()});
+       outState.putIntArray(getString(R.string.scroll_position),
+                new int[]{mNestedScrollViewRecipeDetails.getScrollX(), mNestedScrollViewRecipeDetails.getScrollY()});
         outState.putInt(getString(R.string.selected_row_index), stepAdapter.getSelectedRowIndex());
-    */
+
+    }
+
+    @Override
+    public void onClick(int position) {
+        listener.onStepSelected(position);
+    }
+
+    public StepAdapter getStepAdapter() {
+        return stepAdapter;
+    }
+
+    public interface RecipeDetailsOnClickListener {
+        void onStepSelected(int position);
     }
 }

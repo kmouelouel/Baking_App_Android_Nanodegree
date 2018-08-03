@@ -14,6 +14,9 @@ import com.example.android.myapplication.models.Recipe;
 import com.example.android.myapplication.utils.FetchRecipesTask;
 import com.example.android.myapplication.utils.NetworkUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -23,7 +26,8 @@ public class MainActivity extends AppCompatActivity implements  RecipeAdapter.Re
 
     private final String TAG= MainActivity.class.getName();
     //create an ID to identify the loader responsible for loading our recipe data
-
+    private final String LIFECYCLE_CALLBACKS_RECIPES = "recipes";
+    List<Recipe> mRecipeData;
     @BindView(R.id.recycler_view_recipes)
     RecyclerView mRecyclerViewRecipes;
     @BindView(R.id.loading_indicator)
@@ -44,8 +48,21 @@ public class MainActivity extends AppCompatActivity implements  RecipeAdapter.Re
         mRecyclerViewRecipes.setHasFixedSize(true);
         mRecipeAdapter = new RecipeAdapter(this,this);
         mRecyclerViewRecipes.setAdapter(mRecipeAdapter);
-        loadRecipeData();
+        if (savedInstanceState != null) {
+            mRecipeAdapter.setRecipes( savedInstanceState.<Recipe>getParcelableArrayList(LIFECYCLE_CALLBACKS_RECIPES));
+        }else {
+            loadRecipeData();
+        }
     }
+
+    //   Override onSaveInstanceState
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //  Call super.onSaveInstanceState
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(LIFECYCLE_CALLBACKS_RECIPES, new ArrayList<Recipe>(mRecipeAdapter.getRecipeList()));
+    }
+
     // create a showLoading method that show the prograssBar and hide the recyclerView
     private void loadRecipeData() {
         if(NetworkUtils.isNetworkAvailable(this)) {
