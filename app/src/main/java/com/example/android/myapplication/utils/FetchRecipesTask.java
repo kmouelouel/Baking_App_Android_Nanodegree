@@ -13,6 +13,7 @@ import com.example.android.myapplication.adapters.RecipeAdapter;
 import com.example.android.myapplication.models.Recipe;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,12 +24,14 @@ public class FetchRecipesTask  extends AsyncTask<Void, Void, List<Recipe>> {
     private TextView mErrorMessageDisplay;
     private RecyclerView mRecyclerView;
     private RecipeAdapter mRecipesAdapter;
+    List<Recipe> mRecipes;
     public FetchRecipesTask(Context context,RecipeAdapter recipesAdapter){
         mContext = context;
         mRecipesAdapter = recipesAdapter;
         mLoadingIndicator = mLoadingIndicator = (ProgressBar) ((MainActivity) mContext).findViewById(R.id.loading_indicator);
         mErrorMessageDisplay = (TextView) ((MainActivity) mContext).findViewById(R.id.tv_error_message);
         mRecyclerView = (RecyclerView)((MainActivity) mContext).findViewById(R.id.recycler_view_recipes);
+        mRecipes = new ArrayList<>();
     }
     @Override
     protected List<Recipe> doInBackground(Void... voids) {
@@ -36,6 +39,7 @@ public class FetchRecipesTask  extends AsyncTask<Void, Void, List<Recipe>> {
         try {
             String jsonRecipeResponse  = NetworkUtils.getResponseFromHttpUrl(recipesRequestUrl);
             List<Recipe> jsonRecipeData  = OpenRecipesJsonUtils.getSimpleWeatherStringsFromJson(mContext, jsonRecipeResponse);
+            mRecipes=jsonRecipeData;
             return jsonRecipeData;
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,4 +76,10 @@ public class FetchRecipesTask  extends AsyncTask<Void, Void, List<Recipe>> {
         mRecyclerView.setVisibility(View.INVISIBLE);
 
     }
+
+    public List<Recipe> getRecipes() {
+        return mRecipes;
+    }
+
+
 }

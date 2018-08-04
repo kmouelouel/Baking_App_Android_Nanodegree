@@ -3,6 +3,7 @@ package com.example.android.myapplication.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.Gson;
 import java.util.List;
 
 public class Recipe implements Parcelable {
@@ -98,4 +99,13 @@ public class Recipe implements Parcelable {
         dest.writeString(imageURL);
     }
 
+    public String serialize() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    public static Recipe fromJson(String serializedRecipe) {
+        Gson gson = new Gson();
+        return gson.fromJson(serializedRecipe, Recipe.class);
+    }
 }
