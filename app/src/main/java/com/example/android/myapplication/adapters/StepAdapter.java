@@ -92,4 +92,9 @@ public class StepAdapter  extends RecyclerView.Adapter<StepAdapter.StepViewHolde
     public interface StepOnClickHandler {
         void onClick(int position);
     }
+
+
+    public void setSelectedRowIndex(int selectedRowIndex) {
+        this.selectedRowIndex = selectedRowIndex;
+    }
 }

@@ -33,8 +33,6 @@ public class RecipeDetailsActivity extends AppCompatActivity
                 recipe = (Recipe) intent.getParcelableExtra(getString(R.string.recipe));
                 if (recipe != null) {
                     this.setTitle(recipe.getRecipeName());
-                    // Toast.makeText(getApplicationContext(), recipe.getRecipeName(), Toast.LENGTH_SHORT)
-                    //                 .show();
                     FragmentManager fragmentManager = getSupportFragmentManager();
                     if (fragmentManager.findFragmentByTag(RecipeDetailsFragment.class.getSimpleName()) != null) {
                         return;
@@ -50,13 +48,13 @@ public class RecipeDetailsActivity extends AppCompatActivity
                             .commit();
                     if (getResources().getBoolean(R.bool.isTablet)) {
                         List<Step> steps = recipe.getSteps();
-                     /*   if (steps != null) {
+                       if (steps != null) {
                             bundle = new Bundle();
                             bundle.putParcelableArrayList(getString(R.string.steps), (ArrayList<Step>) steps);
                             bundle.putInt(getString(R.string.step_position), position);
                             FragmentUtils.addDetailsFragment(this, bundle);
                         }
-                        */
+
                     }
                 }
             }
@@ -66,7 +64,7 @@ public class RecipeDetailsActivity extends AppCompatActivity
     @Override
     public void onStepSelected(int position) {
       if (getResources().getBoolean(R.bool.isTablet)) {
-          /*  List<Step> steps = recipe.getSteps();
+           List<Step> steps = recipe.getSteps();
             if (steps != null) {
                 this.position = position;
 
@@ -84,7 +82,7 @@ public class RecipeDetailsActivity extends AppCompatActivity
                     stepAdapter.notifyDataSetChanged();
                 }
             }
-            */
+
         } else {
             List<Step> steps = recipe.getSteps();
 
