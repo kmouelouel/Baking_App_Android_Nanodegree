@@ -45,4 +45,5 @@
     <string name="baking_preferences" translatable="false">baking_preferences</string>
     <string name="serialized_recipe" translatable="false">serialized_recipe</string>
     <string name="choose_a_recipe">Choose a recipe</string>
+    <string name="action_bar" translatable="false">action_bar</string>
 </resources>

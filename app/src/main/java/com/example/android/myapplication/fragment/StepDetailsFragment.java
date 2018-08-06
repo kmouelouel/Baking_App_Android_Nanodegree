@@ -47,6 +47,7 @@ import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -265,13 +266,26 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23) {
+            // initialize player
+            initializePlayer(Uri.parse(videoUrl), getContext());
+        }
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Context context = getContext();
         if (!TextUtils.isEmpty(videoUrl) && NetworkUtils.isNetworkAvailable(context)) {
-            initializePlayer(Uri.parse(videoUrl), context);
-            exoPlayer.seekTo(playbackPosition);
-            exoPlayer.setPlayWhenReady(playWhenReady);
+            if ((Util.SDK_INT <= 23 || exoPlayer == null)) {
+                // initialize player
+                initializePlayer(Uri.parse(videoUrl), context);
+                exoPlayer.seekTo(playbackPosition);
+                exoPlayer.setPlayWhenReady(playWhenReady);
+            }
+
         }
     }
 
@@ -281,9 +295,13 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
         if (exoPlayer == null) {
             return;
         }
-        playbackPosition = exoPlayer.getCurrentPosition();
-        playWhenReady = exoPlayer.getPlayWhenReady();
-        exoPlayer.setPlayWhenReady(false);
+        if (Util.SDK_INT <= 23) {
+            playbackPosition = exoPlayer.getCurrentPosition();
+            playWhenReady = exoPlayer.getPlayWhenReady();
+            exoPlayer.setPlayWhenReady(false);
+            releasePlayer();
+        }
+
     }
 
     @Override
@@ -293,6 +311,14 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
         if (mediaSession != null) {
             mediaSession.setActive(false);
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            releasePlayer();
         }
     }
 
