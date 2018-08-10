@@ -30,7 +30,10 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     implementation 'com.google.code.gson:gson:2.8.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    //added cardView dependency
     implementation 'com.android.support:cardview-v7:27.1.1'
+    //Added ExoPlayer dependency:
+
     implementation 'com.google.android.exoplayer:exoplayer:r2.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testImplementation 'junit:junit:4.12'

@@ -31,6 +31,7 @@ public final class FragmentUtils {
                 .commit();
     }
 
+
     public static void replaceDetailsFragment(FragmentActivity fragmentActivity, Bundle bundle) {
         FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
         fragmentManager.beginTransaction()

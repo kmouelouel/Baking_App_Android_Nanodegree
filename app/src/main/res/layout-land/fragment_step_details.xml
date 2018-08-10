@@ -6,9 +6,9 @@
 
     <com.google.android.exoplayer2.ui.SimpleExoPlayerView
         android:id="@+id/player_view_step"
+        style="@style/PlayerViewStepLandscape"
         app:fastforward_increment="1000"
-        app:rewind_increment="1000"
-        style="@style/PlayerViewStepLandscape" />
+        app:rewind_increment="1000"/>
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/nested_scroll_view_step"

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,6 +70,12 @@ public class MainActivity extends AppCompatActivity implements  RecipeAdapter.Re
             FetchRecipesTask mFetchRecipesTask = new FetchRecipesTask(this,mRecipeAdapter);
             mFetchRecipesTask.execute();
    }
+   else {
+            mProgressBar.setVisibility(View.GONE);
+            mRecyclerViewRecipes.setVisibility(View.GONE);
+            mTextViewErrorMessage.setVisibility(View.VISIBLE);
+            mTextViewErrorMessage.setText(R.string.no_internet_connection);
+        }
     }
 
 

@@ -1,5 +1,7 @@
 package com.example.android.myapplication.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -7,7 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -21,8 +26,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import android.support.v4.media.session.PlaybackStateCompat;
 
 import com.example.android.myapplication.R;
 import com.example.android.myapplication.RecipeDetailsActivity;
@@ -54,6 +57,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+//set the ExoPlayer.EventListener and override the onPlayerStateChanged:
 
 public class StepDetailsFragment extends Fragment implements ExoPlayer.EventListener {
 
@@ -103,7 +107,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
         View view = inflater.inflate(R.layout.fragment_step_details, container, false);
         ButterKnife.bind(this, view);
 
-        Context context = this.getContext();
+        Context context = getContext();
         Bundle bundle = getArguments();
         List<Step> steps = null;
         int position = -1;
@@ -264,7 +268,6 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
             }
         }
     }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -273,19 +276,17 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
             initializePlayer(Uri.parse(videoUrl), getContext());
         }
     }
-
     @Override
     public void onResume() {
         super.onResume();
         Context context = getContext();
         if (!TextUtils.isEmpty(videoUrl) && NetworkUtils.isNetworkAvailable(context)) {
-            if ((Util.SDK_INT <= 23 || exoPlayer == null)) {
-                // initialize player
-                initializePlayer(Uri.parse(videoUrl), context);
-                exoPlayer.seekTo(playbackPosition);
-                exoPlayer.setPlayWhenReady(playWhenReady);
-            }
-
+            initializePlayer(Uri.parse(videoUrl), context);
+            exoPlayer.seekTo(playbackPosition);
+            exoPlayer.setPlayWhenReady(playWhenReady);
+        }
+        if (mediaSession != null) {
+            mediaSession.setActive(true);
         }
     }
 
@@ -301,7 +302,20 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
             exoPlayer.setPlayWhenReady(false);
             releasePlayer();
         }
-
+        if (mediaSession != null) {
+            mediaSession.setActive(false);
+        }
+    }
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (Util.SDK_INT > 23) {
+            // release player
+            releasePlayer();
+        }
+        if (mediaSession != null) {
+            mediaSession.setActive(false);
+        }
     }
 
     @Override
@@ -311,14 +325,6 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
         if (mediaSession != null) {
             mediaSession.setActive(false);
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (Util.SDK_INT > 23) {
-            releasePlayer();
         }
     }
 
@@ -390,6 +396,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        stateBuilder = new PlaybackStateCompat.Builder();
         if (playbackState == ExoPlayer.STATE_READY && playWhenReady) {
             stateBuilder.setState(
                     PlaybackStateCompat.STATE_PLAYING,
@@ -400,12 +407,12 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
             if (getResources().getBoolean(R.bool.isTablet)) {
                 RecipeDetailsActivity recipeDetailsActivity = (RecipeDetailsActivity) getActivity();
                 if (recipeDetailsActivity != null) {
-                  //  recipeDetailsActivity.setIdleState(true);
+                    recipeDetailsActivity.setIdleState(true);
                 }
             } else {
                 StepDetailsActivity stepDetailsActivity = (StepDetailsActivity) getActivity();
                 if (stepDetailsActivity != null) {
-                  //  stepDetailsActivity.setIdleState(true);
+                    stepDetailsActivity.setIdleState(true);
                 }
             }
         } else if (playbackState == ExoPlayer.STATE_READY) {
@@ -415,6 +422,7 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
                     1f
             );
         }
+
         mediaSession.setPlaybackState(stateBuilder.build());
     }
 
@@ -436,5 +444,19 @@ public class StepDetailsFragment extends Fragment implements ExoPlayer.EventList
 
     public interface StepDetailsOnClickListener {
         void onStepSelected(int position);
+    }
+
+    /**
+     * Broadcast Receiver registered to receive the MEDIA_BUTTON intent coming from clients.
+     */
+    public static class MediaReceiver extends BroadcastReceiver {
+
+        public MediaReceiver() {
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            MediaButtonReceiver.handleIntent(mediaSession, intent);
+        }
     }
 }

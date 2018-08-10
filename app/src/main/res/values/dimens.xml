@@ -5,7 +5,6 @@
     <dimen name="width_text_view_steps_header">0dp</dimen>
     <dimen name="width_recycler_view_steps">0dp</dimen>
     <dimen name="width_card_view_step">0dp</dimen>
-    <dimen name="width_text_view_ingredient_quantity_measurement">0dp</dimen>
     <dimen name="width_text_view_ingredient_name">0dp</dimen>
     <dimen name="width_image_view_recipe_item">0dp</dimen>
     <dimen name="width_text_view_step">0dp</dimen>

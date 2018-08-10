@@ -18,10 +18,10 @@
         android:textColor="@color/text_view_step_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="wrap"
+        app:layout_constrainedHeight="true"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintWidth_default="wrap" />
+        app:layout_constrainedWidth="true" />
 
 </android.support.constraint.ConstraintLayout>

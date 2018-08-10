@@ -73,6 +73,7 @@ public class FetchRecipesTask  extends AsyncTask<Void, Void, List<Recipe>> {
 
     private void showErrorMessage() {
         mErrorMessageDisplay.setVisibility(View.VISIBLE);
+        mErrorMessageDisplay.setText(R.string.error_message);
         mRecyclerView.setVisibility(View.INVISIBLE);
 
     }

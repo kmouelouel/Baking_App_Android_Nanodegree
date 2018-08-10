@@ -3,7 +3,9 @@ package com.example.android.myapplication.media;
 import android.support.v4.media.session.MediaSessionCompat;
 
 import com.google.android.exoplayer2.SimpleExoPlayer;
-
+/*
+Media session callbacks, where all external clients control the player
+ */
 public class MediaSessionCallback extends MediaSessionCompat.Callback {
 
     private SimpleExoPlayer exoPlayer;
