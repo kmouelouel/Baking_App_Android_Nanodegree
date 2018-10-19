@@ -1,5 +1,6 @@
 package com.example.android.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements  RecipeAdapter.Re
     // create a showLoading method that show the prograssBar and hide the recyclerView
     private void loadRecipeData() {
         if(NetworkUtils.isNetworkAvailable(this)) {
-            FetchRecipesTask mFetchRecipesTask = new FetchRecipesTask(this,mRecipeAdapter);
+            FetchRecipesTask mFetchRecipesTask = new FetchRecipesTask(this,mRecipeAdapter,this);
             mFetchRecipesTask.execute();
    }
    else {

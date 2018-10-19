@@ -25,23 +25,46 @@ import java.util.List;
  */
 
 public class RecipeWidgetProvider extends AppWidgetProvider {
-    public RecipeWidgetProvider(){
-        super();
-    }
+
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
-
-        // Construct the RemoteViews object
+        int appWidgetId) {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.layout_widget_recipe);
-        // add a pendongIntent to launch tha app
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent= PendingIntent.getActivity(context,0,intent,0);
-        views.setOnClickPendingIntent(R.id.widget_icon_image,pendingIntent);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(
+                context.getString(R.string.baking_preferences),
+                0
+        );
 
-        // Instruct the widget manager to update the widget
+        String serializedRecipe = sharedPreferences.getString(context.getString(
+                R.string.serialized_recipe),
+                null);
+        Intent intent = new Intent(context, ListWidgetService.class);
+        Uri uri = RecipeContract.BASE_CONTENT_URI
+                .buildUpon()
+                .appendPath("widget")
+                .appendPath("id")
+                .appendPath(String.valueOf(appWidgetId))
+                .build();
+        intent.setData(uri);
+
+        views.setRemoteAdapter(R.id.widget_list_view, intent);
+        views.setEmptyView(R.id.widget_empty_view, R.id.tv_error_message);
+        if (!TextUtils.isEmpty(serializedRecipe)) {
+            Recipe recipe = Recipe.fromJson(serializedRecipe);
+            views.setTextViewText(R.id.widget_text_view_recipe_name, recipe.getRecipeName());
+
+            Intent appIntent = new Intent(context, RecipeDetailsActivity.class);
+            appIntent.putExtra(context.getString(R.string.recipe), recipe);
+            PendingIntent appPendingIntent = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+           views.setOnClickPendingIntent(R.id.widget_layout, appPendingIntent);
+            //  views.setPendingIntentTemplate(R.id.widget_layout, appPendingIntent);
+
+        }
+
+
+
         appWidgetManager.updateAppWidget(appWidgetId, views);
-    }
+             }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {

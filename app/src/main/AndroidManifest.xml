@@ -37,14 +37,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".RecipeDetailsActivity" />
         </activity>
-
+        <activity android:name=".WidgetConfigurationActivity">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_CONFIGURE" />
+            </intent-filter>
+        </activity>
         <receiver android:name=".fragment.StepDetailsFragment$MediaReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
-
-
         <receiver android:name=".widget.RecipeWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -55,6 +57,10 @@
                 android:resource="@xml/recipe_widget_provider_info" />
         </receiver>
 
+
+        <service android:name=".widget.ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"
+            android:exported="false"/>
     </application>
 
 </manifest>

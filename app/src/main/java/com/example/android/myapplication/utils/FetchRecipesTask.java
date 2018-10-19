@@ -1,5 +1,6 @@
 package com.example.android.myapplication.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -16,21 +17,27 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 
 public class FetchRecipesTask  extends AsyncTask<Void, Void, List<Recipe>> {
 
     Context mContext;
-    private ProgressBar mLoadingIndicator;
-    private TextView mErrorMessageDisplay;
-    private RecyclerView mRecyclerView;
-    private RecipeAdapter mRecipesAdapter;
     List<Recipe> mRecipes;
-    public FetchRecipesTask(Context context,RecipeAdapter recipesAdapter){
+    Activity mActivity;
+    private ProgressBar mLoadingIndicator;
+   private TextView mErrorMessageDisplay;
+   private RecyclerView mRecyclerView;
+    private RecipeAdapter mRecipesAdapter;
+
+    public FetchRecipesTask(Context context,RecipeAdapter recipesAdapter, Activity activity){
+        mActivity = activity;
         mContext = context;
         mRecipesAdapter = recipesAdapter;
-        mLoadingIndicator = mLoadingIndicator = (ProgressBar) ((MainActivity) mContext).findViewById(R.id.loading_indicator);
-        mErrorMessageDisplay = (TextView) ((MainActivity) mContext).findViewById(R.id.tv_error_message);
-        mRecyclerView = (RecyclerView)((MainActivity) mContext).findViewById(R.id.recycler_view_recipes);
+        mLoadingIndicator =  (ProgressBar) mActivity.findViewById(R.id.loading_indicator);
+        mErrorMessageDisplay = (TextView) mActivity.findViewById(R.id.tv_error_message);
+        mRecyclerView = (RecyclerView)mActivity.findViewById(R.id.recycler_view_recipes);
         mRecipes = new ArrayList<>();
     }
     @Override
